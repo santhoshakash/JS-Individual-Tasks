@@ -133,16 +133,6 @@ const Districts = [
   
   let final;
   
-  function calculatingDays(arr) {
-    for (i = 0; i < arr.length; i++) {
-      const obj1 = route[arr[i]];
-      if (obj1 !== undefined) {
-        if (obj1[arr[i + 1]] !== undefined) {
-          daysFlow.push(obj1[arr[i + 1]]);
-        }
-      }
-    }
-  }
   
   const fetchingFrom = function (data) {
     let createFrom = "";
@@ -180,8 +170,7 @@ const Districts = [
         // route[final.path] !== undefined &&
         final.distance !== "Infinity"
       ) {
-        calculatingDays(final.path);
-       UI(final.path, final.distance, daysFlow);
+       UI(final.path, final.distance);
       } else {
        result.innerHTML = "No Route";
       }
@@ -189,17 +178,8 @@ const Districts = [
   });
   console.log(final);
   
-  const UI = function (path, totaldays, numberPath) {
+  const UI = function (path, numberPath) {
     let append = "";
-    let startingDate = new Date();
-    let dayFrom1 = startingDate.getDate();
-    let dayFrom = lastvalue(dayFrom1);
-    let monthFrom = months[startingDate.getMonth()];
-    const dateShowing = displayDate(totaldays);
-    let dayTo2 = dateShowing.getDate();
-    let dayTo = lastvalue(dayTo2);
-    let monthTo = months[dateShowing.getMonth()];
-    if (daysFlow.length !== 0) {
       path.forEach((e, index) => {
         if (index + 1 === path.length) {
           append += `${e}<br>`;
@@ -207,41 +187,13 @@ const Districts = [
           append += `${e} ➡`;
         }
       });
-      append +=`Departure ${dayFrom} ${monthFrom} & Arrive ${dayTo} ${monthTo}`;
+      append += `It takes ${numberPath} Days to go`
+      // append +=`Departure ${dayFrom} ${monthFrom} & Arrive ${dayTo} ${monthTo}`;
      result.innerHTML = append;
      result.classList.remove('hidden');
-    } else {
-     result.innerHTML = "No Route";
-    }
   
     daysFlow = [];
   };
-  const lastvalue = function (d) {
-    if (d > 3 && d < 21) return `${d}`;
-    switch (d % 10) {
-      case 1:
-        return `${d}`;
-      case 2:
-        return `${d}`;
-      case 3:
-        return `${d}`;
-      default:
-        return `${d}`;
-    }
-  };
-  function displayDate(days) {
-    let startDate = new Date();
-    let endDate;
-    let DaysToAdd = days;
-    let count = 0;
-    while (count < DaysToAdd) {
-      endDate = new Date(startDate.setDate(startDate.getDate() + 1));
-      if (endDate.getDay() != 0 && endDate.getDay() != 6) {
-        count++;
-      }
-    }
-     
-    return endDate;
-  }
+
   
    
