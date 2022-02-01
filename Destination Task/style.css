@@ -61,10 +61,10 @@ body {
   font-size: 30px;
    
   margin-top: 5%;
-  background-color:rgba(255, 255, 255, 0.959);
+  /* background-color:rgba(255, 255, 255, 0.959); */
   padding: 10px;
   border-radius: 20px;
-  border: 3px solid #333;
+  /* border: 3px solid #333; */
   border-collapse:collapse;
 
 }

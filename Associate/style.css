@@ -1,11 +1,9 @@
  
-.container {
+.container,body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),
-    linear-gradient(127deg, rgba(0,255,0,.8), rgba(0,255,0,0) 70.71%),
-    linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%);
+    background:  rgba(173, 216, 230, 0.911);
     width: 100%;
     height: 100vh;
     overflow: auto;
@@ -15,6 +13,7 @@
     font-size: 30px;
     margin-bottom: 12px;
     margin-top: 15rem;
+    /* margin-left: 43px; */
     text-decoration-line: underline;
 }
   .text-field{
@@ -30,9 +29,11 @@
     padding: 10px;
     font-size: 20px;
     border: none;
+    /* margin-left: 36%; */
   }
   .btn:hover{
     background-color: rgb(7, 7, 216);
+    color: rgba(255, 255, 255, 0.932);
   }
   .final {
     margin-top: 20px;
@@ -41,13 +42,14 @@
   table,
   th,
   td {
-    border: 1px solid black;
+    border: 3px solid rgb(0, 0, 0);
     border-collapse: collapse;
     margin-top: -28rem;
     padding: 21px;
     font-size: 21px;
     margin-left: 61%;
+    
   }
-  /* .hidden {
+  .hidden {
     display: none;
-  } */
+  }
