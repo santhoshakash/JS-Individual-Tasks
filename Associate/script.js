@@ -62,6 +62,7 @@ if (el !== '')
 })
 console.log(array);
 let obj = {};//it store the value
+if(array.length != 0){
 for (let i = 0; i < array.length; i++) {
 if (obj[array[i]] === undefined) {
 obj[array[i]] = 1;
@@ -70,6 +71,11 @@ console.log(obj[array[i]]);
 obj[array[i]]++;
 console.log(obj[array[i]])
 }
+}
+head.classList.remove("hidden")
+}
+else{
+head.classList.add("hidden")
 }
 console.log(obj);
 return obj;

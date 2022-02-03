@@ -1,5 +1,4 @@
-
-const cities = [
+const Districts = [
   "Madurai",
   "Tirunelveli",
   "Trichy",
@@ -8,7 +7,7 @@ const cities = [
   "Salem",
   "Bangalore",
 ];
-const cities1 = [
+const Districts1 = [
   "Madurai",
   "Tirunelveli",
   "Trichy",
@@ -18,6 +17,7 @@ const cities1 = [
   "Bangalore",
   "Mumbai",
 ];
+ 
 const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",];
 
 const from = document.querySelector(".from");
@@ -38,6 +38,7 @@ const route = {
   },
   Tirunelveli: {
     Madurai: 2,
+    
   },
   Trichy: {
     Chennai: 3,
@@ -45,10 +46,12 @@ const route = {
   Chennai: {
     Bangalore: 2,
     Mumbai: 5,
+    Coimbatore: 4
   },
   Coimbatore: {
     Chennai: 3,
     Bangalore: 3,
+    
   },
   Salem: {
     Bangalore: 2,
@@ -57,9 +60,7 @@ const route = {
     Mumbai: 3,
   },
 };
-
-let daysFlow = [];
-
+let dayspart = [];
 let findpath = (way, startPlace, endingPlace) => {
   if (way[startPlace] === undefined) {
     return;
@@ -79,7 +80,7 @@ let findpath = (way, startPlace, endingPlace) => {
 
   let alredyPathVisited = [];
   let node = findShortWay(distances, alredyPathVisited);
-  while (node) {
+  while (node) { //it has node value
     let distance = distances[node];
     let children = way[node];
     for (let child in children) {
@@ -98,15 +99,14 @@ let findpath = (way, startPlace, endingPlace) => {
     alredyPathVisited.push(node);
     // move to nearest neighbor node
     node = findShortWay(distances, alredyPathVisited);
+    console.log(distances)
   }
 
   // using the stored paths from start node to end node
   // save the shortest path
   let shortestPath = [endingPlace];
   let parent = parentElements[endingPlace];
-  console.log(parent);
   while (parent) {
-    console.log(parent);
     shortestPath.push(parent);
     parent = parentElements[parent];
   }
@@ -117,9 +117,8 @@ let findpath = (way, startPlace, endingPlace) => {
     distance: distances[endingPlace],
     path: shortestPath,
   };
-
+// console.log(path);
   // return the shortest path & the end node's distance from the start node
-  console.log(results);
   return results;
 };
 
@@ -136,128 +135,161 @@ let findShortWay = (distances, alredyPathVisited) => {
       // }
     }
   }
-  console.log(shortest, "short");
 
   return shortest;
 };
 
 let final;
 
+function daycalculated(arr1) {
+  for (i = 0; i < arr1.length; i++) {
+    const obj1 = route[arr1[i]];
+    if (obj1 !== undefined) {
+      if (obj1[arr1[i + 1]] !== undefined) {
+        dayspart.push(obj1[arr1[i + 1]]);
+      }
+    }
+  }
+}
 
-const fetchingFrom = function (data) {
+
+const fetchFrom = function (data) {
   let createoption = "";
   Object.keys(data).forEach((e, index) => {
     createoption += `<option value = '${e}'>${data[e]}</option>`;
   });
   from.insertAdjacentHTML("beforeend", createoption);
+};
+fetchFrom(Districts);
+const fetchTo = function (data) {
+  let createoption = "";
+  Object.keys(data).forEach((e, index) => {
+    createoption += `<option value = '${e}'>${data[e]}</option>`;
+  });
   to.insertAdjacentHTML("beforeend", createoption);
 };
-fetchingFrom(cities);
-
+fetchTo (Districts1);
  
 from.addEventListener("change", (e) => {
+  result.classList.add('hidden');
   selectFrom = e.target.value;
  result.innerHTML = "";
 });
 
 to.addEventListener("change", (e) => {
+  result.classList.add('hidden');
   selectTo = e.target.value;
  result.innerHTML = "";
 });
 
-btn.addEventListener("click", () => {
-  let from = cities[selectFrom];
-  let to = cities1[selectTo];
-  console.log(from, to);
-   
-  if (from !== undefined && to !== undefined) {
-    let append2="";
-    final = findpath(route, from, to);
-    // getBusinessDays();
-    // getBusinessDays(dateObj, days);
+ 
+  // for get the route btn adding the events.
+  btn.addEventListener("click", () => {
+    let from = Districts[selectFrom];
+    let to = Districts1[selectTo];
+
+    // let newAppointment = addDays(appointment, final.distance);
+    // console.log(from, to);
+    // if the from or to ,anything is undefined,then return
+    if (from !== undefined && to !== undefined) {
+      final = findpath(route, from, to);
+  
+      if (
+        final &&
+        // route[final.path] !== undefined &&
+        final.distance !== "Infinity"
+      ) {
+        daycalculated(final.path);
+       front(final.path, final.distance,dayspart);
+      //  add= 
+       const fas = (final.path,final.distance);
+       const sd =fas;
+      } else {
+       result.innerHTML = "Route not found";
+       result.classList.add('show');
+     result.classList.remove('hidden');
+      }
+    }
+  });
+  
+  const front = function (path,totaldays,addpath) {
+    // let addpath="";
+    let append2 = "";
     let appointment = new Date();
     let date = appointment.getDate();
     let month = months[appointment.getMonth()];
-    // let month1 =months[appointment.getMonth()]
     let newAppointment = addDays(appointment, final.distance);
-    // let date2 = newAppointment.getDate();
-    // let month2 =months[newAppointment.getMonth()]
-    let weekendday = (getBusinessDays(new Date(),final.distance)).toString().split(' ').splice(1,2).join(' ')
-    console.log(final)
-
-  for(index =0 ; index < 1 ; index++){
-    final.path.forEach((e) => {
-      if (index === final.path.length) {
-        append2 += `${e}`;
-        console.log(append2)
-      } else {
-        append2 += `${e}➡`;
-      }
-    });
-  }
-    append2 += `It takes ${final.distance} Days to go &`
-
-  if (
-      final &&
-      route[final.path[0]] !== undefined 
-    ) {
-     append2 += ` Departure-  ${month} ${date} & Arrive- ${weekendday}`;
-     result.innerHTML = append2;
-     result.classList.remove('hidden');
-     
-     
-    } 
-     else {
-            answer.innerHTML = "Route Not Found";
-            result.classList.remove('hidden');
-          }
+    // const dateShowing = showdate(totaldays);
+    // let dateShowing = dates();
+    let Departured = (getBusinessDays(new Date(),final.distance)).toString().split(' ').splice(1,3).join(' ')
+      if (dayspart.length !==0){
+      path.forEach((e, index) => {
+        if (index + 1 === path.length) {
+          append2 += `${e} <br> `;
+        } else {
+          append2 += `${e}→`;  
         }
-  //   if(final.distance ===  'Infinity') {
-  //     // console.log('hi')
-  //    result.textContent = "No Route";
-  //    result.classList.remove('hidden');
-  //   }
-  // }
-  
-});
-let dateObj;
-let days;
-function getBusinessDays(dateObj, days) {
-  for (var i = 0; i < days; i++) {
-      if (days > 0) {
-          switch (dateObj.getDay()) {
-            // 6 being Saturday and 0 being Sunday.
-            case 6, 0:
-              dateObj.setDate(dateObj.getDate() + 2)
-              break;
-              //sunday
-              case 0:
-                dateObj.setDate(dateObj.getDate() + 1)
-                break;
-                //saturday
-                case 6:
-                  dateObj.setDate(dateObj.getDate() + 2)
-                  break;
-                //handle Monday, Tuesday, Wednesday and Thursday!
-                default:
-                  dateObj.setDate(dateObj.getDate() + 1)
-                  //console.log(dateObj)
-                  break;
-                }
-               
+      });
+      addpath.forEach((e, index) => {
+        if (addpath.length === 1) {
+          append2 += `${e} days.  `;
+        } else if (addpath.length === index + 1) {
+          append2 += `${e} = ${totaldays} days.`;
+        } else {
+          append2 += `${e} + `;
+        }
+      });
+      // append2 += `It takes ${final.distance} Days to reach<br>`;
+      // if(addpath !== undefined){
+     
+      // let appointment = new Date();
+      // let date = appointment.getDate();
+      // let month = months[appointment.getMonth()];
+
+      if (
+        final &&
+        route[final.path[0]] !== undefined 
+      ) 
+      {
+       append2 += ` Departure-  ${month} ${date} & Arrive- ${Departured}`;
+       result.innerHTML = append2;
+       result.classList.remove('hidden');
+       
       }
-  }
-
-  return dateObj;
-}
-
-// console.log('hii');
-// //Mon Dec 20 2021 18:56:01 GMT+0530 (India Standard Time)
-console.log(getBusinessDays(new Date(), final.distance))
-
-
-function addDays(originalDate, days){
+      dayspart = []; 
+ };
+ function addDays(originalDate, days){
   cloneDate = new Date(originalDate.valueOf());
   cloneDate.setDate(cloneDate.getDate() + days);
   return cloneDate;
+}
+  function getBusinessDays(dateObj, days) {
+    for (var i = 0; i < days; i++) {
+        if (days > 0) {
+            switch (dateObj.getDay()) {
+              // 6 being Saturday and 0 being Sunday.
+              // case 6, 0:
+              //   dateObj.setDate(dateObj.getDate() + 2)
+              //   break;
+                // sunday.
+                case 0:
+                  dateObj.setDate(dateObj.getDate() + 1)
+                  break;
+                  //5 = Friday.
+                  case 6:
+                    dateObj.setDate(dateObj.getDate() + 2)
+                    break;
+                  //handle Monday, Tuesday, Wednesday and Thursday!
+                  default:
+                    dateObj.setDate(dateObj.getDate() + 1)
+                    //console.log(dateObj)
+                    break;
+                  }
+                  
+        }
+    }
+  
+    return dateObj;
+  } 
+   
 }

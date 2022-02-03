@@ -1,13 +1,14 @@
 html,
 body {
-  height: 100vh;
+  /* height: 100vh; */
   width: 100%;
    
-  background-image: linear-gradient(to right bottom, #371e05, #5e2710, #8c2a23, #bd2344, #eb1272);
+  background-color: #345345;
   margin: 0px;
   padding: 0px;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
+  margin-top: 50px;
   align-items: center;
   flex-direction: column;
   font-family: "Montserrat", sans-serif;
@@ -19,7 +20,7 @@ body {
   background-color: white;
   gap: 2rem;
   box-sizing: border-box;
-  padding: 21px;
+  padding: 45px;
 }
 .from
  {
@@ -59,15 +60,20 @@ body {
  
 .result {
   font-size: 30px;
-   
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   margin-top: 5%;
-  /* background-color:rgba(255, 255, 255, 0.959); */
+  background-color:rgba(255, 255, 255, 0.959);
   padding: 10px;
   border-radius: 20px;
-  /* border: 3px solid #333; */
+  border: 3px solid #333;
   border-collapse:collapse;
+   
 
 }
 .hidden{
   display: none;
+
 }
